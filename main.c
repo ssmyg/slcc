@@ -11,6 +11,6 @@ int main(int argc, char **argv) {
   printf(".global main\n");
   printf("main:\n");
   printf("	mov rax, %d\n", atoi(argv[1]));
-    printf("	ret\n");
+  printf("	ret\n");
   return 0;
 }

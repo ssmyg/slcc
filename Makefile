@@ -1,7 +1,7 @@
 CFLAGS=-std=c11 -g -static
 
 slcc: main.c
-	cc $(CFLAGS) -o slcc $<
+	cc $(CFLAGS) -o $@ $?
 
 test: slcc
 	./test.sh
