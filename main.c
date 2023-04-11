@@ -4,14 +4,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef struct s_node t_node;
+typedef struct s_token t_token;
+
+bool consume(char op);
+void expect(char op);
+t_node *expr();
+
+// 抽象構文木のノードの種類
+typedef enum {
+  ND_ADD,
+  ND_SUB,
+  ND_MUL,
+  ND_DIV,
+  ND_NUM
+} e_node_kind;
+
+// 抽象構文木のノードの型
+struct s_node {
+  e_node_kind kind;
+  t_node *lhs;
+  t_node *rhs;
+  int val;
+};
+
 // トークンの種類
 typedef enum {
   TK_RESERVED, // 記号
   TK_NUM,      // 整数トークン
   TK_EOF,      // 入力の終わりを示すトークン
 } e_token_kind;
-
-typedef struct s_token t_token;
 
 struct s_token {
   e_token_kind kind; // トークンの種類
@@ -49,6 +71,21 @@ void error_at(char *loc, char *fmt, ...) {
   exit(1);
 }
 
+t_node *new_node(e_node_kind kind, t_node *lhs, t_node *rhs) {
+  t_node *node = calloc(1, sizeof(t_node));
+  node->kind = kind;
+  node->lhs = lhs;
+  node->rhs = rhs;
+  return node;
+}
+
+t_node *new_node_num(int val) {
+  t_node *node = calloc(1, sizeof(t_node));
+  node->kind = ND_NUM;
+  node->val = val;
+  return node;
+}
+
 // 次のトークンが期待している記号の時、トークンを一つ読み進めて真を返す
 // それ以外の場合、偽を返す
 bool consume(char op) {
@@ -56,6 +93,12 @@ bool consume(char op) {
     return false;
   token = token->next;
   return true;
+}
+
+void expect(char op) {
+  if (token->kind != TK_RESERVED || token->str[0] != op)
+    error_at(token->str, "expected '%c'", op);
+  token = token->next;
 }
 
 // 次のトークンが数値の場合、トークンを読み進めてその数値を返す
@@ -111,6 +154,43 @@ t_token *tokenize() {
 
   new_token(TK_EOF, cur, p);
   return head.next;
+}
+
+t_node *primary() {
+  // 次のトークンが"("なら、"(" expr ")"のはず
+  if (consume('(')) {
+    t_node *node = expr();
+    expect(')');
+    return node;
+  }
+
+  // そうでなければ数値のはず
+  return new_node_num(expect_number());
+}
+
+t_node *mul() {
+  t_node *node = primary();
+  while (true) {
+    if (consume('*'))
+      node = new_node(ND_MUL, node, primary());
+    else if (consume('/'))
+      node = new_node(ND_DIV, node, primary());
+    else
+      return node;
+  }
+}
+
+t_node *expr() {
+  t_node *node = mul();
+
+  while (true) {
+    if (consume('+'))
+      node = new_node(ND_ADD, node, mul());
+    else if (consume('-'))
+      node = new_node(ND_SUB, node, mul());
+    else
+      return node;
+  }
 }
 
 int main(int argc, char **argv) {
