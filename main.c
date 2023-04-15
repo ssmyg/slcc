@@ -225,14 +225,14 @@ t_node *relational() {
   t_node *node = add();
 
   while (true) {
-    if (consume("<"))
-      node = new_node(ND_LT, node, add());
-    else if (consume("<="))
+    if (consume("<="))
       node = new_node(ND_LE, node, add());
-    else if (consume(">")) // > は < の両辺を入れ替えて実装
-      node = new_node(ND_LT, add(), node);
+    else if (consume("<"))
+      node = new_node(ND_LT, node, add());
     else if (consume(">=")) // >= は <= の両辺を入れ替えて実装
       node = new_node(ND_LE, add(), node);
+    else if (consume(">")) // >  は <  の両辺を入れ替えて実装
+      node = new_node(ND_LT, add(), node);
     else
       return node;
   }

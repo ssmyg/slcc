@@ -36,6 +36,7 @@ assert 0 "5 == 6"
 assert 0 "5 != 5"
 assert 1 "5 != 6"
 
+assert 0 "5 < 4"
 assert 0 "5 < 5"
 assert 1 "5 < 6"
 
@@ -43,13 +44,16 @@ assert 0 "5 <= 4"
 assert 1 "5 <= 5"
 assert 1 "5 <= 6"
 
+assert 1 "5 > 4"
 assert 0 "5 > 5"
-assert 1 "6 > 5"
+assert 0 "5 > 6"
 
-assert 0 "4 >= 5"
+assert 1 "5 >= 4"
 assert 1 "5 >= 5"
-assert 1 "6 >= 5"
+assert 0 "5 >= 6"
 
-assert 1 "(2 - 3) * 10 < (2 + 3) "
+assert 1 "-1 * 2 + 1 < -2 + 4"
+assert 0 "+1 * 2 + 1 < -2 + 4"
+
 echo OK
 
