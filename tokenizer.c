@@ -39,6 +39,15 @@ bool consume(char *op) {
   return true;
 }
 
+t_token *consume_ident() {
+  if (token->kind == TK_IDENT) {
+    t_token *ret = token;
+    token = token->next;
+    return ret;
+  }
+  return NULL;
+}
+
 void expect(char *op) {
   if (token->kind != TK_RESERVED || strlen(op) != token->len || memcmp(token->str, op, token->len))
     error_at(token->str, "expected '%s'", op);
@@ -84,6 +93,12 @@ t_token *tokenize() {
     // 空白文字ならスキップ
     if (isspace(*p)) {
       p++;
+      continue;
+    }
+
+    if ('a' <= *p && *p <= 'z') {
+      cur = new_token(TK_IDENT, cur, p, 1);
+      p += 1;
       continue;
     }
 

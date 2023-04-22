@@ -25,7 +25,16 @@ t_node *primary() {
     return node;
   }
 
-  // そうでなければ数値のはず
+  // ローカル変数
+  t_token *tok = consume_ident();
+  if (tok) {
+    t_node *node = calloc(1, sizeof(t_node));
+    node->kind = ND_LVAR;
+    node->offset = (tok->str[0] - 'a' + 1) * 8;
+    return node;
+  }
+
+  // 数値
   return new_node_num(expect_number());
 }
 

@@ -57,5 +57,8 @@ assert 0 "+1 * 2 + 1 < -2 + 4;"
 
 assert 42 "32; 42;"
 
+assert 6 "a = 1 + 2; a + 3;"
+assert 23 "a = 10; b = a + 2; z = a + b; z + 1;"
+
 echo OK
 

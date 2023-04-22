@@ -25,6 +25,7 @@ struct s_node {
   t_node *rhs;
   t_node *next;
   int val;
+  int offset;
 };
 
 // トークンの種類
@@ -52,12 +53,13 @@ extern char *user_input;
 /////////////////
 // codegen.c
 /////////////////
-void gen(t_node *node);
+void codegen(t_node *node);
 
 /////////////////
 // tokenizer.c
 /////////////////
 bool consume(char *op);
+t_token *consume_ident();
 void expect(char *op);
 t_token *tokenize();
 
@@ -69,4 +71,5 @@ bool at_eof();
 /////////////////
 // parser.c
 /////////////////
+t_node *expr();
 t_node *program();
