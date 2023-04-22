@@ -93,8 +93,42 @@ t_node *equality() {
   }
 }
 
-t_node *expr() {
+t_node *assign() {
   t_node *node = equality();
+
+  while (true) {
+    if (consume("="))
+      node = new_node(ND_ASSIGN, node, assign());
+    else
+      return node;
+  }
+}
+
+t_node *expr() {
+  t_node *node = assign();
 
   return node;
 }
+
+t_node *stmt() {
+  t_node *node = expr();
+  node->next = NULL;
+
+  expect(";");
+  return node;
+}
+
+t_node *program() {
+  t_node head;
+  head.next = NULL;
+  t_node *cur = &head;
+
+  int i = 0;
+  while (!at_eof()) {
+    t_node *node = stmt();
+    cur->next = node;
+    cur = node;
+  }
+  return head.next;
+}
+

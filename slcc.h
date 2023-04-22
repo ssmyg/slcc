@@ -9,11 +9,13 @@ typedef enum {
   ND_SUB,
   ND_MUL,
   ND_DIV,
-  ND_EQ, // ==
-  ND_NE, // !=
-  ND_LT, // <
-  ND_LE, // <=
-  ND_NUM
+  ND_EQ,     // ==
+  ND_NE,     // !=
+  ND_LT,     // <
+  ND_LE,     // <=
+  ND_ASSIGN, // =
+  ND_LVAR,   // ローカル変数
+  ND_NUM     // 整数
 } e_node_kind;
 
 // 抽象構文木のノードの型
@@ -21,12 +23,14 @@ struct s_node {
   e_node_kind kind;
   t_node *lhs;
   t_node *rhs;
+  t_node *next;
   int val;
 };
 
 // トークンの種類
 typedef enum {
   TK_RESERVED, // 記号
+  TK_IDENT,    // 識別子
   TK_NUM,      // 整数トークン
   TK_EOF,      // 入力の終わりを示すトークン
 } e_token_kind;
@@ -60,7 +64,9 @@ t_token *tokenize();
 void error(char *fmt, ...);
 int expect_number();
 
+bool at_eof();
+
 /////////////////
 // parser.c
 /////////////////
-t_node *expr();
+t_node *program();
