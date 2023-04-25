@@ -69,7 +69,7 @@ bool at_eof() {
 }
 
 // 新しいトークンを作成してcurにつなげる
-t_token *new_token(e_token_kind kind, t_token *cur, char *str, int len) {
+t_token *new_token(e_token_kind kind, t_token *cur, char *str, size_t len) {
   t_token *tok = calloc(1, sizeof(t_token));
   tok->kind = kind;
   tok->str = str;
@@ -96,7 +96,7 @@ t_token *tokenize() {
       continue;
     }
 
-    int v_len = var_len(p);
+    size_t v_len = var_len(p);
     if (v_len) {
       cur = new_token(TK_IDENT, cur, p, v_len);
       p += v_len;
@@ -117,7 +117,7 @@ t_token *tokenize() {
     }
 
     if (isdigit(*p)) {
-      cur = new_token(TK_NUM, cur, p, -1);
+      cur = new_token(TK_NUM, cur, p, 0);
       cur->val = strtol(p, &p, 10);
       continue;
     }
@@ -125,6 +125,6 @@ t_token *tokenize() {
     error_at(p, "トークナイズできません");
   }
 
-  new_token(TK_EOF, cur, p, -1);
+  new_token(TK_EOF, cur, p, 0);
   return head.next;
 }

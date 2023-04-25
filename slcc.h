@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stddef.h>
 
 typedef struct s_node t_node;
 typedef struct s_token t_token;
@@ -51,14 +52,14 @@ struct s_token {
   t_token *next;     // 次のトークン
   int val;           // kindがTK_NUMの場合、その値
   char *str;         // トークン文字列
-  int len;           // トークンの長さ
+  size_t len;        // トークンの長さ
 };
 
 // ローカル変数の型
 struct s_lvar {
   t_lvar *next; // 次の変数かNULL
   char *name;   // 変数名
-  int len;      // 名前の長さ
+  size_t len;   // 名前の長さ
   int offset;   // RBPからのオフセット
 };
 
@@ -89,6 +90,6 @@ t_node *program();
 /////////////////
 // var.c
 /////////////////
-int var_len(char *p);
+size_t var_len(char *p);
 t_lvar *new_lvar(t_token *tok);
 t_lvar *find_lvar(t_token *tok);

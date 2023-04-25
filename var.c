@@ -11,7 +11,7 @@ bool is_var_char(char p) {
   return isalpha(p) || isdigit(p) || p == '_';
 }
 
-int var_len(char *p) { 
+size_t var_len(char *p) {
   char *q = p;
   if (is_var_char_begin(*p)) {
     while(is_var_char(*p))

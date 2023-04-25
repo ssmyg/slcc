@@ -29,6 +29,9 @@ void gen(t_node *node) {
     printf("  mov [rax], rdi\n");
     printf("  push rdi\n");
     return;
+  default:
+    // 何もしない
+    break;
   }
 
   gen(node->lhs);
@@ -71,6 +74,8 @@ void gen(t_node *node) {
     printf("  setle al\n");
     printf("  movzb rax, al\n");
     break;
+  default:
+    error("不正なノードです\n");
   }
   printf("  push rax\n");
 }
