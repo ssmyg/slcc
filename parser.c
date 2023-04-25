@@ -127,8 +127,13 @@ t_node *expr() {
 }
 
 t_node *stmt() {
-  t_node *node = expr();
-  node->next = NULL;
+  t_node *node;
+
+  if (consume("return")) {
+    node = new_node(ND_RETURN, expr(), NULL);
+  } else {
+    node = expr();
+  }
 
   expect(";");
   return node;

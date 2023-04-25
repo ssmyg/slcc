@@ -96,6 +96,12 @@ t_token *tokenize() {
       continue;
     }
 
+    if (strncmp(p, "return", 6) == 0 && !is_var_char(*(p + 6))) {
+      cur = new_token(TK_RESERVED, cur, p, 6);
+      p += 6;
+      continue;
+    }
+
     size_t v_len = var_len(p);
     if (v_len) {
       cur = new_token(TK_IDENT, cur, p, v_len);
