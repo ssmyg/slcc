@@ -32,7 +32,7 @@ t_node *primary() {
     node->kind = ND_LVAR;
 
     t_lvar *lvar = find_lvar(tok);
-    if(lvar) {
+    if (lvar) {
       node->offset = lvar->offset;
     } else {
       lvar = new_lvar(tok);
@@ -139,7 +139,6 @@ t_node *program() {
   head.next = NULL;
   t_node *cur = &head;
 
-  int i = 0;
   while (!at_eof()) {
     t_node *node = stmt();
     cur->next = node;
