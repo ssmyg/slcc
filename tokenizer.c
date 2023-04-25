@@ -96,9 +96,10 @@ t_token *tokenize() {
       continue;
     }
 
-    if ('a' <= *p && *p <= 'z') {
-      cur = new_token(TK_IDENT, cur, p, 1);
-      p += 1;
+    int v_len = var_len(p);
+    if (v_len) {
+      cur = new_token(TK_IDENT, cur, p, v_len);
+      p += v_len;
       continue;
     }
 

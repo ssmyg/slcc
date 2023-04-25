@@ -30,7 +30,14 @@ t_node *primary() {
   if (tok) {
     t_node *node = calloc(1, sizeof(t_node));
     node->kind = ND_LVAR;
-    node->offset = (tok->str[0] - 'a' + 1) * 8;
+
+    t_lvar *lvar = find_lvar(tok);
+    if(lvar) {
+      node->offset = lvar->offset;
+    } else {
+      lvar = new_lvar(tok);
+      node->offset = lvar->offset;
+    }
     return node;
   }
 

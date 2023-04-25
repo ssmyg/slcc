@@ -82,7 +82,8 @@ void codegen(t_node *node) {
 
   printf("  push rbp\n");
   printf("  mov rbp, rsp\n");
-  printf("  sub rsp, %d\n", 26 * 8);
+  // ローカル変数100個固定
+  printf("  sub rsp, %d\n", 100 * 8);
   while (node) {
     gen(node);
     printf("  pop rax\n");

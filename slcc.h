@@ -2,6 +2,16 @@
 
 typedef struct s_node t_node;
 typedef struct s_token t_token;
+typedef struct s_lvar t_lvar;
+
+// 現在着目しているトーク
+extern t_token *token;
+
+// 入力プログラム
+extern char *user_input;
+
+// ローカル変数
+extern t_lvar *locals;
 
 // 抽象構文木のノードの種類
 typedef enum {
@@ -44,11 +54,13 @@ struct s_token {
   int len;           // トークンの長さ
 };
 
-// 現在着目しているトーク
-extern t_token *token;
-
-// 入力プログラム
-extern char *user_input;
+// ローカル変数の型
+struct s_lvar {
+  t_lvar *next; // 次の変数かNULL
+  char *name;   // 変数名
+  int len;      // 名前の長さ
+  int offset;   // RBPからのオフセット
+};
 
 /////////////////
 // codegen.c
@@ -73,3 +85,10 @@ bool at_eof();
 /////////////////
 t_node *expr();
 t_node *program();
+
+/////////////////
+// var.c
+/////////////////
+int var_len(char *p);
+t_lvar *new_lvar(t_token *tok);
+t_lvar *find_lvar(t_token *tok);

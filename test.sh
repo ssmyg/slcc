@@ -55,10 +55,15 @@ assert 0 "5 >= 6;"
 assert 1 "-1 * 2 + 1 < -2 + 4;"
 assert 0 "+1 * 2 + 1 < -2 + 4;"
 
+# 複数行
 assert 42 "32; 42;"
 
+# 変数
 assert 6 "a = 1 + 2; a + 3;"
 assert 23 "a = 10; b = a + 2; z = a + b; z + 1;"
-
+assert 4 "a = b = 2; a + b;"
+assert 10 "aaa = 5; aba = 2; xyz = aaa * aba / 2 + 5; xyz;"
+assert 15 "aa = 10; aa = aa + 5; bb = 30; aa;"
+assert 12 "a1 = 10; Ab2 = 5; ret_a = a1 / Ab2 * 6;"
 echo OK
 
