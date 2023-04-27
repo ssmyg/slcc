@@ -1,6 +1,8 @@
 #include "slcc.h"
 #include <stdio.h>
 
+static int label_seq = 0;
+
 void gen_lvar(t_node *node) {
   if (node->kind != ND_LVAR)
     error("左辺値が変数ではありません\n");
@@ -29,6 +31,16 @@ void gen(t_node *node) {
     printf("  mov [rax], rdi\n");
     printf("  push rdi\n");
     return;
+  case ND_IF: {
+    int seq = label_seq++;
+    gen(node->lhs);
+    printf("  pop rax\n");
+    printf("  cmp rax, 0\n");
+    printf("  je .L.end.%d\n", seq);
+    gen(node->rhs);
+    printf(".L.end.%d:\n", seq);
+    return;
+  }
   case ND_RETURN:
     gen(node->lhs);
     printf("  pop rax\n");

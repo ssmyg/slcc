@@ -28,6 +28,7 @@ typedef enum {
   ND_LVAR,   // ローカル変数
   ND_NUM,    // 整数
   ND_RETURN, // リターン
+  ND_IF,     // if
 } e_node_kind;
 
 // 抽象構文木のノードの型

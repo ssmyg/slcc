@@ -70,6 +70,14 @@ assert 12 "a1 = 10; Ab2 = 5; ret_a = a1 / Ab2 * 6;"
 assert 6 "return_= 1 + 2; return_+ 3;"
 assert 6 "return1 = 1 + 2; return1 + 3;"
 assert 6 "return 2 * 3; return 10;"
-assert 6 "a = 5; return a + 1; a;"
+assert 6 "a = 5; return a + 1;"
+
+# if文
+assert 6 "if(1==1) return 6; return 0;"
+assert 6 "if(0==1) return 0; return 6;"
+assert 20 "a = 10; if(a == 10) a = 20; return a;"
+assert 10 "a = 10; if(a != 10) a = 20; return a;"
+
+assert 30 "a = 10; if(a != 10) a = 20; if(a == 10)  a = 30 ;return a;"
 echo OK
 
