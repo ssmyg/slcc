@@ -10,6 +10,15 @@ t_node *new_node(e_node_kind kind, t_node *lhs, t_node *rhs) {
   return node;
 }
 
+t_node *new_node_if(e_node_kind kind, t_node *cond, t_node *then, t_node *els) {
+  t_node *node = calloc(1, sizeof(t_node));
+  node->kind = kind;
+  node->cond = cond;
+  node->then = then;
+  node->els = els;
+  return node;
+}
+
 t_node *new_node_num(int val) {
   t_node *node = calloc(1, sizeof(t_node));
   node->kind = ND_NUM;
@@ -129,10 +138,17 @@ t_node *expr() {
 t_node *stmt() {
   t_node *node;
   if (consume("if")) {
+    t_node *cond;
+    t_node *then;
+    t_node *els = NULL;
     expect("(");
-    node = expr();
+    cond = expr();
     expect(")");
-    return new_node(ND_IF, node, stmt());
+    then = stmt();
+    if (consume("else")) {
+      els = stmt();
+    }
+    return new_node_if(ND_IF, cond, then, els);
   }
   if (consume("return")) {
     node = new_node(ND_RETURN, expr(), NULL);

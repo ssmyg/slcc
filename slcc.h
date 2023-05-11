@@ -37,6 +37,12 @@ struct s_node {
   t_node *lhs;
   t_node *rhs;
   t_node *next;
+
+  // if
+  t_node *cond;
+  t_node *then;
+  t_node *els;
+
   int val;
   int offset;
 };

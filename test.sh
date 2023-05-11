@@ -79,5 +79,6 @@ assert 20 "a = 10; if(a == 10) a = 20; return a;"
 assert 10 "a = 10; if(a != 10) a = 20; return a;"
 
 assert 30 "a = 10; if(a != 10) a = 20; if(a == 10)  a = 30 ;return a;"
+assert 30 "a = 10; if(a != 10) a = 20; else a = 30 ;return a;"
 echo OK
 

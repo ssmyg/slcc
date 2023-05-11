@@ -82,6 +82,21 @@ bool is_starts_with(char *s1, char *s2, int len) {
   return strncmp(s1, s2, len) == 0;
 }
 
+static char *reserved_words[] = {"return", "if", "else", NULL};
+
+bool tokenize_reserved_words(t_token **cur_ptr, char **p_ptr) {
+  for (int i = 0; reserved_words[i]; i++) {
+    char *rw = reserved_words[i];
+    int len = strlen(rw);
+    if (strncmp(*p_ptr, rw, len) == 0 && !is_var_char(*(*p_ptr + len))) {
+      *cur_ptr = new_token(TK_RESERVED, *cur_ptr, *p_ptr, len);
+      *p_ptr += len;
+      return true;
+    }
+  }
+  return false;
+}
+
 // 入力文字列pをトークナイズしてそれを返す
 t_token *tokenize() {
   char *p = user_input;
@@ -96,15 +111,7 @@ t_token *tokenize() {
       continue;
     }
 
-    if (strncmp(p, "if", 2) == 0 && !is_var_char(*(p + 2))) {
-      cur = new_token(TK_RESERVED, cur, p, 2);
-      p += 2;
-      continue;
-    }
-
-    if (strncmp(p, "return", 6) == 0 && !is_var_char(*(p + 6))) {
-      cur = new_token(TK_RESERVED, cur, p, 6);
-      p += 6;
+    if (tokenize_reserved_words(&cur, &p)) {
       continue;
     }
 
@@ -116,7 +123,6 @@ t_token *tokenize() {
     }
 
     if (is_starts_with(p, "==", 2) || is_starts_with(p, "!=", 2) || is_starts_with(p, "<=", 2) || is_starts_with(p, ">=", 2)) {
-
       cur = new_token(TK_RESERVED, cur, p, 2);
       p += 2;
       continue;
