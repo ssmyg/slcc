@@ -86,5 +86,9 @@ assert 10 "a = 0; while(a < 10) a = a + 1; return a;"
 
 # for
 assert 10 "a = 0; for(i = 0; i < 10; i = i + 1) a = a + 1; return a;"
+assert 0 "a = 0; for(;;) return a;"
+assert 0 "for(i = 0;;) return i;"
+assert 0 "i = 0; for(;i == 0;) return i;"
+assert 0 "i = 0; for(;;i = i + 1) return i;"
 echo OK
 

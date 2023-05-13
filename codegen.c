@@ -63,14 +63,18 @@ void gen(t_node *node) {
   }
   case ND_FOR: {
     int seq = label_seq++;
-    gen(node->init);
+    if (node->init)
+      gen(node->init);
     printf(".L.begin.%d:\n", seq);
-    gen(node->cond);
-    printf("  pop rax\n");
-    printf("  cmp rax, 0\n");
-    printf("  je .L.end.%d\n", seq);
+    if (node->cond) {
+      gen(node->cond);
+      printf("  pop rax\n");
+      printf("  cmp rax, 0\n");
+      printf("  je .L.end.%d\n", seq);
+    }
     gen(node->then);
-    gen(node->incl);
+    if (node->incl)
+      gen(node->incl);
     printf("  jmp .L.begin.%d\n", seq);
     printf(".L.end.%d:\n", seq);
     return;
@@ -78,9 +82,7 @@ void gen(t_node *node) {
   case ND_RETURN:
     gen(node->lhs);
     printf("  pop rax\n");
-    printf("  mov rsp, rbp\n");
-    printf("  pop rbp\n");
-    printf("  ret\n");
+    printf("  jmp .L.return\n");
     return;
   default:
     // 何もしない
@@ -147,6 +149,7 @@ void codegen(t_node *node) {
     printf("  pop rax\n");
     node = node->next;
   }
+  printf(".L.return:\n");
   printf("  mov rsp, rbp\n");
   printf("  pop rbp\n");
   printf("  ret\n");
