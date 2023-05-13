@@ -61,6 +61,20 @@ void gen(t_node *node) {
     printf(".L.end.%d:\n", seq);
     return;
   }
+  case ND_FOR: {
+    int seq = label_seq++;
+    gen(node->init);
+    printf(".L.begin.%d:\n", seq);
+    gen(node->cond);
+    printf("  pop rax\n");
+    printf("  cmp rax, 0\n");
+    printf("  je .L.end.%d\n", seq);
+    gen(node->then);
+    gen(node->incl);
+    printf("  jmp .L.begin.%d\n", seq);
+    printf(".L.end.%d:\n", seq);
+    return;
+  }
   case ND_RETURN:
     gen(node->lhs);
     printf("  pop rax\n");

@@ -84,5 +84,7 @@ assert 30 "a = 10; if(a != 10) a = 20; else a = 30 ;return a;"
 # while
 assert 10 "a = 0; while(a < 10) a = a + 1; return a;"
 
+# for
+assert 10 "a = 0; for(i = 0; i < 10; i = i + 1) a = a + 1; return a;"
 echo OK
 

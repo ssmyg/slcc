@@ -30,6 +30,7 @@ typedef enum {
   ND_RETURN, // リターン
   ND_IF,     // if
   ND_WHILE,  // while
+  ND_FOR,    // for
 } e_node_kind;
 
 // 抽象構文木のノードの型
@@ -39,10 +40,14 @@ struct s_node {
   t_node *rhs;
   t_node *next;
 
-  // if
+  // if (cond) then else els;
+  // while (cond) then;
+  // for (init; cond; incl) then;
   t_node *cond;
   t_node *then;
   t_node *els;
+  t_node *init;
+  t_node *incl;
 
   int val;
   int offset;

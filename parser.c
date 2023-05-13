@@ -10,23 +10,6 @@ t_node *new_node(e_node_kind kind, t_node *lhs, t_node *rhs) {
   return node;
 }
 
-t_node *new_node_if(e_node_kind kind, t_node *cond, t_node *then, t_node *els) {
-  t_node *node = calloc(1, sizeof(t_node));
-  node->kind = kind;
-  node->cond = cond;
-  node->then = then;
-  node->els = els;
-  return node;
-}
-
-t_node *new_node_loop(e_node_kind kind, t_node *cond, t_node *then) {
-  t_node *node = calloc(1, sizeof(t_node));
-  node->kind = kind;
-  node->cond = cond;
-  node->then = then;
-  return node;
-}
-
 t_node *new_node_num(int val) {
   t_node *node = calloc(1, sizeof(t_node));
   node->kind = ND_NUM;
@@ -146,26 +129,44 @@ t_node *expr() {
 t_node *stmt() {
   t_node *node;
   if (consume("if")) {
-    t_node *cond;
-    t_node *then;
-    t_node *els = NULL;
+    node = calloc(1, sizeof(t_node));
+    node->kind = ND_IF;
     expect("(");
-    cond = expr();
+    node->cond = expr();
     expect(")");
-    then = stmt();
+    node->then = stmt();
     if (consume("else")) {
-      els = stmt();
+      node->els = stmt();
     }
-    return new_node_if(ND_IF, cond, then, els);
+    return node;
   }
   if (consume("while")) {
-    t_node *cond;
-    t_node *then;
+    node = calloc(1, sizeof(t_node));
+    node->kind = ND_WHILE;
     expect("(");
-    cond = expr();
+    node->cond = expr();
     expect(")");
-    then = stmt();
-    return new_node_loop(ND_WHILE, cond, then);
+    node->then = stmt();
+    return node;
+  }
+  if (consume("for")) {
+    t_node *node = calloc(1, sizeof(t_node));
+    node->kind = ND_FOR;
+    expect("(");
+    if (!consume(";")) {
+      node->init = expr();
+      expect(";");
+    }
+    if (!consume(";")) {
+      node->cond = expr();
+      expect(";");
+    }
+    if (!consume(")")) {
+      node->incl = expr();
+      expect(")");
+    }
+    node->then = stmt();
+    return node;
   }
   if (consume("return")) {
     node = new_node(ND_RETURN, expr(), NULL);
