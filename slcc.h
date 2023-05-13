@@ -29,6 +29,7 @@ typedef enum {
   ND_NUM,    // 整数
   ND_RETURN, // リターン
   ND_IF,     // if
+  ND_WHILE,  // while
 } e_node_kind;
 
 // 抽象構文木のノードの型

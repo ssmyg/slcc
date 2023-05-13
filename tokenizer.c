@@ -82,7 +82,7 @@ bool is_starts_with(char *s1, char *s2, int len) {
   return strncmp(s1, s2, len) == 0;
 }
 
-static char *reserved_words[] = {"return", "if", "else", NULL};
+static char *reserved_words[] = {"return", "if", "else", "while", NULL};
 
 bool tokenize_reserved_words(t_token **cur_ptr, char **p_ptr) {
   for (int i = 0; reserved_words[i]; i++) {

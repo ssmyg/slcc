@@ -80,5 +80,9 @@ assert 10 "a = 10; if(a != 10) a = 20; return a;"
 
 assert 30 "a = 10; if(a != 10) a = 20; if(a == 10)  a = 30 ;return a;"
 assert 30 "a = 10; if(a != 10) a = 20; else a = 30 ;return a;"
+
+# while
+assert 10 "a = 0; while(a < 10) a = a + 1; return a;"
+
 echo OK
 

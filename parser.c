@@ -19,6 +19,14 @@ t_node *new_node_if(e_node_kind kind, t_node *cond, t_node *then, t_node *els) {
   return node;
 }
 
+t_node *new_node_loop(e_node_kind kind, t_node *cond, t_node *then) {
+  t_node *node = calloc(1, sizeof(t_node));
+  node->kind = kind;
+  node->cond = cond;
+  node->then = then;
+  return node;
+}
+
 t_node *new_node_num(int val) {
   t_node *node = calloc(1, sizeof(t_node));
   node->kind = ND_NUM;
@@ -149,6 +157,15 @@ t_node *stmt() {
       els = stmt();
     }
     return new_node_if(ND_IF, cond, then, els);
+  }
+  if (consume("while")) {
+    t_node *cond;
+    t_node *then;
+    expect("(");
+    cond = expr();
+    expect(")");
+    then = stmt();
+    return new_node_loop(ND_WHILE, cond, then);
   }
   if (consume("return")) {
     node = new_node(ND_RETURN, expr(), NULL);
