@@ -128,6 +128,18 @@ t_node *expr() {
 
 t_node *stmt() {
   t_node *node;
+  if (consume("{")) {
+    t_node body_head;
+    t_node *body_curr = &body_head;
+    while (!consume("}")) {
+      body_curr->next = stmt();
+      body_curr = body_curr->next;
+    }
+    node = calloc(1, sizeof(t_node));
+    node->kind = ND_BLOCK;
+    node->body = body_head.next;
+    return node;
+  }
   if (consume("if")) {
     node = calloc(1, sizeof(t_node));
     node->kind = ND_IF;

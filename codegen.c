@@ -13,6 +13,12 @@ void gen_lvar(t_node *node) {
 
 void gen(t_node *node) {
   switch (node->kind) {
+  case ND_BLOCK: {
+    for (t_node *ni = node->body; ni; ni = ni->next) {
+      gen(ni);
+      printf("  pop rax\n"); // TODO これは不要？
+    }
+  }
   case ND_NUM:
     printf("  push %d\n", node->val);
     return;

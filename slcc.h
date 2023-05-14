@@ -31,6 +31,7 @@ typedef enum {
   ND_IF,     // if
   ND_WHILE,  // while
   ND_FOR,    // for
+  ND_BLOCK,  // block
 } e_node_kind;
 
 // 抽象構文木のノードの型
@@ -48,6 +49,9 @@ struct s_node {
   t_node *els;
   t_node *init;
   t_node *incl;
+
+  // block
+  t_node *body;
 
   int val;
   int offset;

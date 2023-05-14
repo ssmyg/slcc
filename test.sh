@@ -90,5 +90,10 @@ assert 0 "a = 0; for(;;) return a;"
 assert 0 "for(i = 0;;) return i;"
 assert 0 "i = 0; for(;i == 0;) return i;"
 assert 0 "i = 0; for(;;i = i + 1) return i;"
+
+# block
+assert 10 "{1 + 1; 2 - 3; return 2 * 5; return 0;}"
+assert 10 "a = 0; for(;;){ if( a == 10 ) return a; a = a + 1; }"
+
 echo OK
 
