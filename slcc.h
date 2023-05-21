@@ -32,6 +32,7 @@ typedef enum {
   ND_WHILE,  // while
   ND_FOR,    // for
   ND_BLOCK,  // block
+  ND_FUNC,   // func
 } e_node_kind;
 
 // 抽象構文木のノードの型
@@ -55,6 +56,9 @@ struct s_node {
 
   int val;
   int offset;
+
+  // function
+  char *func;
 };
 
 // トークンの種類

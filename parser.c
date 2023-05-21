@@ -1,6 +1,6 @@
-
 #include "slcc.h"
 #include <stdlib.h>
+#include <string.h>
 
 t_node *new_node(e_node_kind kind, t_node *lhs, t_node *rhs) {
   t_node *node = calloc(1, sizeof(t_node));
@@ -25,9 +25,19 @@ t_node *primary() {
     return node;
   }
 
-  // ローカル変数
   t_token *tok = consume_ident();
   if (tok) {
+    if (consume("(")) {
+      // 関数
+      expect(")");
+      t_node *node = calloc(1, sizeof(t_node));
+      node->kind = ND_FUNC;
+      node->func = malloc(sizeof(char) * (tok->len + 1));
+      strncpy(node->func, tok->str, tok->len);
+      return node;
+    }
+
+    // ローカル変数
     t_node *node = calloc(1, sizeof(t_node));
     node->kind = ND_LVAR;
 

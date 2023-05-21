@@ -1,11 +1,17 @@
 #!/bin/bash
+
+cat <<EOF | gcc -xc -c -o tmp2.o -
+int ret3() { return 3; }
+int ret_5() { return 5; }
+EOF
+
 assert() {
   expected="$1"
   input="$2"
 
   ./slcc "$input" > tmp.s
   #cat tmp.s
-  cc -o tmp tmp.s -Wa,--noexecstack
+  cc -o tmp tmp.s tmp2.o -Wa,--noexecstack
   ./tmp
   actual="$?"
 
@@ -95,5 +101,8 @@ assert 0 "i = 0; for(;;i = i + 1) return i;"
 assert 10 "{1 + 1; 2 - 3; return 2 * 5; return 0;}"
 assert 10 "a = 0; for(;;){ if( a == 10 ) return a; a = a + 1; }"
 
+# function
+assert 3 "return ret3();"
+assert 5 "return ret_5();"
 echo OK
 
