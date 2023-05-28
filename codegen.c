@@ -24,9 +24,12 @@ void gen(t_node *node) {
     printf("  push %d\n", node->val);
     return;
   case ND_FUNC: {
-    for (int i = 0; node->args[i]; i++)
-      gen(node->args[i]);
-    for (int i = 0; node->args[i]; i++)
+    int n = 0;
+    while (node->args[n]) {
+      gen(node->args[n]);
+      n++;
+    }
+    for (int i = n - 1; i >= 0; i--)
       printf("  pop %s\n", ARG_REG[i]);
     // RSPが16の倍数になるように調整してから関数呼び出しを行う
     // 可変長引数のためにRAXを0に設定
