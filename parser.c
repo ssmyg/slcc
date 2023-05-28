@@ -29,8 +29,19 @@ t_node *primary() {
   if (tok) {
     if (consume("(")) {
       // 関数
-      expect(")");
       t_node *node = calloc(1, sizeof(t_node));
+      int i = 0;
+      if (!consume(")")) {
+        node->args[i] = assign();
+        i++;
+        while (consume(",")) {
+          if (i >= 6)
+            error("function too many args.");
+          node->args[i] = assign();
+          i++;
+        }
+        expect(")");
+      }
       node->kind = ND_FUNC;
       node->func = malloc(sizeof(char) * (tok->len + 1));
       strncpy(node->func, tok->str, tok->len);

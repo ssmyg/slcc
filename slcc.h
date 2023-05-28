@@ -59,6 +59,7 @@ struct s_node {
 
   // function
   char *func;
+  t_node *args[6];
 };
 
 // トークンの種類
@@ -106,6 +107,7 @@ bool at_eof();
 /////////////////
 // parser.c
 /////////////////
+t_node *assign();
 t_node *expr();
 t_node *program();
 
@@ -116,3 +118,4 @@ size_t var_len(char *p);
 t_lvar *new_lvar(t_token *tok);
 bool is_var_char(char p);
 t_lvar *find_lvar(t_token *tok);
+

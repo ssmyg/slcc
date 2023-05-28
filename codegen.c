@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 static int label_seq = 0;
+static char *ARG_REG[] = {"rdi", "rsi", "rdx", "rcx", "r8", "r9"};
 
 void gen_lvar(t_node *node) {
   if (node->kind != ND_LVAR)
@@ -23,6 +24,10 @@ void gen(t_node *node) {
     printf("  push %d\n", node->val);
     return;
   case ND_FUNC:
+    for (int i = 0; node->args[i]; i++) {
+      gen(node->args[i]);
+      printf("  pop %s\n", ARG_REG[i]);
+    }
     printf("  call %s\n", node->func);
     printf("  push rax\n");
     return;
