@@ -23,14 +23,29 @@ void gen(t_node *node) {
   case ND_NUM:
     printf("  push %d\n", node->val);
     return;
-  case ND_FUNC:
+  case ND_FUNC: {
     for (int i = 0; node->args[i]; i++)
       gen(node->args[i]);
     for (int i = 0; node->args[i]; i++)
       printf("  pop %s\n", ARG_REG[i]);
+    // RSPが16の倍数になるように調整してから関数呼び出しを行う
+    // 可変長引数のためにRAXを0に設定
+    int seq = label_seq++;
+    printf("  mov rax, rsp\n");
+    printf("  and rax, 15\n");
+    printf("  jnz .L.call.%d\n", seq);
+    printf("  mov rax, 0\n");
     printf("  call %s\n", node->func);
+    printf("  jmp .L.end.%d\n", seq);
+    printf(".L.call.%d:\n", seq);
+    printf("  sub rsp, 8\n");
+    printf("  mov rax, 0\n");
+    printf("  call %s\n", node->func);
+    printf("  add rsp, 8\n");
+    printf(".L.end.%d:\n", seq);
     printf("  push rax\n");
     return;
+  }
   case ND_LVAR:
     gen_lvar(node);
     printf("  pop rax\n");
