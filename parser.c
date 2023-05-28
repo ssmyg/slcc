@@ -32,7 +32,7 @@ t_node *primary() {
       t_node *node = calloc(1, sizeof(t_node));
       int i = 0;
       if (!consume(")")) {
-        node->args[i] = assign();
+        node->args[i] = expr();
         i++;
         while (consume(",")) {
           if (i >= 6)

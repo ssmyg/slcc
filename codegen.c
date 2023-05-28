@@ -24,10 +24,10 @@ void gen(t_node *node) {
     printf("  push %d\n", node->val);
     return;
   case ND_FUNC:
-    for (int i = 0; node->args[i]; i++) {
+    for (int i = 0; node->args[i]; i++)
       gen(node->args[i]);
+    for (int i = 0; node->args[i]; i++)
       printf("  pop %s\n", ARG_REG[i]);
-    }
     printf("  call %s\n", node->func);
     printf("  push rax\n");
     return;
