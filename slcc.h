@@ -4,6 +4,7 @@
 typedef struct s_node t_node;
 typedef struct s_token t_token;
 typedef struct s_lvar t_lvar;
+typedef struct s_function t_function;
 
 // 現在着目しているトーク
 extern t_token *token;
@@ -62,6 +63,12 @@ struct s_node {
   t_node *args[6];
 };
 
+struct s_function {
+  char *name;
+  t_node *node;
+  int lvar_num;
+};
+
 // トークンの種類
 typedef enum {
   TK_RESERVED, // 記号
@@ -89,13 +96,14 @@ struct s_lvar {
 /////////////////
 // codegen.c
 /////////////////
-void codegen(t_node *node);
+void codegen(t_function *func);
 
 /////////////////
 // tokenizer.c
 /////////////////
 bool consume(char *op);
 t_token *consume_ident();
+// char *expect_func();
 void expect(char *op);
 t_token *tokenize();
 
@@ -109,7 +117,7 @@ bool at_eof();
 /////////////////
 t_node *assign();
 t_node *expr();
-t_node *program();
+t_function *program();
 
 /////////////////
 // var.c

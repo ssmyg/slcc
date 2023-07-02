@@ -43,7 +43,7 @@ t_node *primary() {
         expect(")");
       }
       node->kind = ND_FUNC;
-      node->func = malloc(sizeof(char) * (tok->len + 1));
+      node->func = calloc(tok->len + 1, sizeof(char));
       strncpy(node->func, tok->str, tok->len);
       return node;
     }
@@ -210,8 +210,40 @@ t_node *stmt() {
   expect(";");
   return node;
 }
+/*
+t_node *func() {
+  char *func_name = expect_func();
+  expect("(");
+  expect(")");
+  expect("{");
 
-t_node *program() {
+  t_node head;
+  head.next = NULL;
+  t_node *cur = &head;
+  while (!consume("}")) {
+    t_node *node = stmt();
+    cur->next = node;
+    cur = node;
+  }
+
+  t_node *func_node = calloc(1, sizeof(t_node));
+  func_node->func = func_name;
+  return func_node;
+}
+*/
+
+int count_lvar_num() {
+  int num = 0;
+  t_lvar *tmp = locals;
+  while (tmp) {
+    num++;
+    tmp = tmp->next;
+  }
+  return num;
+}
+
+t_function *program() {
+  t_function *func = (t_function *)calloc(1, sizeof(t_function));
   t_node head;
   head.next = NULL;
   t_node *cur = &head;
@@ -221,6 +253,10 @@ t_node *program() {
     cur->next = node;
     cur = node;
   }
-  return head.next;
+  func->node = head.next;
+  func->lvar_num = count_lvar_num();
+  func->name = "main";
+
+  return func;
 }
 

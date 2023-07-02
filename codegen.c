@@ -168,15 +168,15 @@ void gen(t_node *node) {
   printf("  push rax\n");
 }
 
-void codegen(t_node *node) {
+void codegen(t_function *func) {
   printf(".intel_syntax noprefix\n");
-  printf(".global main\n");
-  printf("main:\n");
+  printf(".global %s\n", func->name);
+  printf("%s:\n", func->name);
 
   printf("  push rbp\n");
   printf("  mov rbp, rsp\n");
-  // ローカル変数100個固定
-  printf("  sub rsp, %d\n", 100 * 8);
+  printf("  sub rsp, %d\n", func->lvar_num * 8);
+  t_node *node = func->node;
   while (node) {
     gen(node);
     printf("  pop rax\n");

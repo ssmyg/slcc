@@ -20,9 +20,9 @@ int main(int argc, char **argv) {
   locals = calloc(1, sizeof(t_lvar));
   user_input = argv[1];
   token = tokenize();
-  t_node *node = program();
+  t_function *func = program();
 
-  codegen(node);
+  codegen(func);
   return 0;
 }
 
