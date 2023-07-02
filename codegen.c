@@ -1,6 +1,7 @@
 #include "slcc.h"
 #include <stdio.h>
 
+static char *func_name;
 static int label_seq = 0;
 static char *ARG_REG[] = {"rdi", "rsi", "rdx", "rcx", "r8", "r9"};
 
@@ -115,7 +116,7 @@ void gen(t_node *node) {
   case ND_RETURN:
     gen(node->lhs);
     printf("  pop rax\n");
-    printf("  jmp .L.return\n");
+    printf("  jmp .L.return.%s\n", func_name);
     return;
   default:
     // 何もしない
@@ -170,20 +171,21 @@ void gen(t_node *node) {
 
 void codegen(t_function *func) {
   printf(".intel_syntax noprefix\n");
-  printf(".global %s\n", func->name);
-  printf("%s:\n", func->name);
+  for (t_function *fn = func; fn; fn = fn->next) {
+    func_name = fn->name;
+    printf(".global %s\n", fn->name);
+    printf("%s:\n", fn->name);
 
-  printf("  push rbp\n");
-  printf("  mov rbp, rsp\n");
-  printf("  sub rsp, %d\n", func->lvar_num * 8);
-  t_node *node = func->node;
-  while (node) {
-    gen(node);
-    printf("  pop rax\n");
-    node = node->next;
+    printf("  push rbp\n");
+    printf("  mov rbp, rsp\n");
+    printf("  sub rsp, %d\n", fn->lvar_num * 8);
+    for (t_node *node = fn->node; node; node = node->next) {
+      gen(node);
+      printf("  pop rax\n");
+    }
+    printf(".L.return.%s:\n", fn->name);
+    printf("  mov rsp, rbp\n");
+    printf("  pop rbp\n");
+    printf("  ret\n");
   }
-  printf(".L.return:\n");
-  printf("  mov rsp, rbp\n");
-  printf("  pop rbp\n");
-  printf("  ret\n");
 }

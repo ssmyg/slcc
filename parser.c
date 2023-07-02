@@ -210,8 +210,19 @@ t_node *stmt() {
   expect(";");
   return node;
 }
-/*
-t_node *func() {
+
+int count_lvar_num() {
+  int num = 0;
+  t_lvar *tmp = locals;
+  while (tmp) {
+    num++;
+    tmp = tmp->next;
+  }
+  return num;
+}
+
+t_function *func() {
+  locals = calloc(1, sizeof(t_lvar));
   char *func_name = expect_func();
   expect("(");
   expect(")");
@@ -226,37 +237,24 @@ t_node *func() {
     cur = node;
   }
 
-  t_node *func_node = calloc(1, sizeof(t_node));
-  func_node->func = func_name;
-  return func_node;
-}
-*/
-
-int count_lvar_num() {
-  int num = 0;
-  t_lvar *tmp = locals;
-  while (tmp) {
-    num++;
-    tmp = tmp->next;
-  }
-  return num;
+  t_function *func = (t_function *)calloc(1, sizeof(t_function));
+  func->name = func_name;
+  func->node = head.next;
+  func->lvar_num = count_lvar_num();
+  return func;
 }
 
 t_function *program() {
-  t_function *func = (t_function *)calloc(1, sizeof(t_function));
-  t_node head;
+  t_function head;
   head.next = NULL;
-  t_node *cur = &head;
+  t_function *cur = &head;
 
   while (!at_eof()) {
-    t_node *node = stmt();
-    cur->next = node;
-    cur = node;
+    t_function *fn = func();
+    cur->next = fn;
+    cur = fn;
   }
-  func->node = head.next;
-  func->lvar_num = count_lvar_num();
-  func->name = "main";
 
-  return func;
+  return head.next;
 }
 

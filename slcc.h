@@ -67,6 +67,7 @@ struct s_function {
   char *name;
   t_node *node;
   int lvar_num;
+  t_function *next;
 };
 
 // トークンの種類
@@ -103,7 +104,7 @@ void codegen(t_function *func);
 /////////////////
 bool consume(char *op);
 t_token *consume_ident();
-// char *expect_func();
+char *expect_func();
 void expect(char *op);
 t_token *tokenize();
 

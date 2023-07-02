@@ -17,7 +17,6 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  locals = calloc(1, sizeof(t_lvar));
   user_input = argv[1];
   token = tokenize();
   t_function *func = program();

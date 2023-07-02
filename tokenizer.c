@@ -48,6 +48,15 @@ t_token *consume_ident() {
   return NULL;
 }
 
+char *expect_func() {
+  if (token->kind != TK_IDENT)
+    error_at(token->str, "not function");
+  char *func = calloc(token->len + 1, sizeof(char));
+  strncpy(func, token->str, token->len);
+  token = token->next;
+  return func;
+}
+
 void expect(char *op) {
   if (token->kind != TK_RESERVED || strlen(op) != token->len || memcmp(token->str, op, token->len))
     error_at(token->str, "expected '%s'", op);
