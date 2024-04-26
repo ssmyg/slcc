@@ -12,7 +12,8 @@
       "args": [
         "return 42;"
       ],
-      "cwd": "${workspaceFolder}"
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "make",
     }
   ]
 }

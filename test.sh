@@ -29,57 +29,57 @@ assert() {
 }
 
 # 四則演算
-assert 0 "main () {0;}"
-assert 42 "main () {42;}"
-assert 21 "main () {5+20-4;}"
-assert 21 "main () { 5  + 20 -  4  ;        }"
-assert 4 "main () {4 * ( 5 - 2 ) / 3;}"
-assert 47 "main () {5 + 6 * 7;}"
-assert 15 "main () {5 * (9 - 6);}"
-assert 4 "main () {(3 + 5) / 2;}"
-assert 10 "main () {-10 + 20;}"
-assert 40 "main () {+10 + 20 - ( -10 );}"
+assert 0 "main () {return 0;}"
+assert 42 "main () {return 42;}"
+assert 21 "main () {return 5+20-4;}"
+assert 21 "main () {return  5  + 20 -  4  ;        }"
+assert 4 "main () {return 4 * ( 5 - 2 ) / 3;}"
+assert 47 "main () {return 5 + 6 * 7;}"
+assert 15 "main () {return 5 * (9 - 6);}"
+assert 4 "main () {return (3 + 5) / 2;}"
+assert 10 "main () {return -10 + 20;}"
+assert 40 "main () {return +10 + 20 - ( -10 );}"
 
 # 比較演算子
-assert 1 "main () {5 == 5;}"
-assert 0 "main () {5 == 6;}"
+assert 1 "main () {return 5 == 5;}"
+assert 0 "main () {return 5 == 6;}"
 
-assert 0 "main () {5 != 5;}"
-assert 1 "main () {5 != 6;}"
+assert 0 "main () {return 5 != 5;}"
+assert 1 "main () {return 5 != 6;}"
 
-assert 0 "main () {5 < 4;}"
-assert 0 "main () {5 < 5;}"
-assert 1 "main () {5 < 6;}"
+assert 0 "main () {return 5 < 4;}"
+assert 0 "main () {return 5 < 5;}"
+assert 1 "main () {return 5 < 6;}"
 
-assert 0 "main () {5 <= 4;}"
-assert 1 "main () {5 <= 5;}"
-assert 1 "main () {5 <= 6;}"
+assert 0 "main () {return 5 <= 4;}"
+assert 1 "main () {return 5 <= 5;}"
+assert 1 "main () {return 5 <= 6;}"
 
-assert 1 "main () {5 > 4;}"
-assert 0 "main () {5 > 5;}"
-assert 0 "main () {5 > 6;}"
+assert 1 "main () {return 5 > 4;}"
+assert 0 "main () {return 5 > 5;}"
+assert 0 "main () {return 5 > 6;}"
 
-assert 1 "main () {5 >= 4;}"
-assert 1 "main () {5 >= 5;}"
-assert 0 "main () {5 >= 6;}"
+assert 1 "main () {return 5 >= 4;}"
+assert 1 "main () {return 5 >= 5;}"
+assert 0 "main () {return 5 >= 6;}"
 
-assert 1 "main () {-1 * 2 + 1 < -2 + 4;}"
-assert 0 "main () {+1 * 2 + 1 < -2 + 4;}"
+assert 1 "main () {return -1 * 2 + 1 < -2 + 4;}"
+assert 0 "main () {return +1 * 2 + 1 < -2 + 4;}"
 
 # 複数行
-assert 42 "main () {32; 42;}"
+assert 42 "main () {32; return 42;}"
 
 # 変数
-assert 6 "main () {a = 1 + 2; a + 3;}"
-assert 23 "main () {a = 10; b = a + 2; z = a + b; z + 1;}"
+assert 6 "main () {a = 1 + 2; return a + 3;}"
+assert 23 "main () {a = 10; b = a + 2; z = a + b; return z + 1;}"
 assert 4 "main () {a = b = 2; a + b;}"
-assert 10 "main () {aaa = 5; aba = 2; xyz = aaa * aba / 2 + 5; xyz;}"
-assert 15 "main () {aa = 10; aa = aa + 5; bb = 30; aa;}"
-assert 12 "main () {a1 = 10; Ab2 = 5; ret_a = a1 / Ab2 * 6;}"
+assert 10 "main () {aaa = 5; aba = 2; xyz = aaa * aba / 2 + 5; return xyz;}"
+assert 15 "main () {aa = 10; aa = aa + 5; bb = 30; return aa;}"
+assert 12 "main () {a1 = 10; Ab2 = 5; ret_a = a1 / Ab2 * 6; return ret_a;}"
 
 # return文
-assert 6 "main () {return_= 1 + 2; return_+ 3;}"
-assert 6 "main () {return1 = 1 + 2; return1 + 3;}"
+assert 6 "main () {return_= 1 + 2; return return_+ 3;}"
+assert 6 "main () {return1 = 1 + 2; return return1 + 3;}"
 assert 6 "main () {return 2 * 3; return 10;}"
 assert 6 "main () {a = 5; return a + 1;}"
 
@@ -120,6 +120,8 @@ assert 21 "main () {return ret_arg6(1==1,2,3,4,2+3,2*3);}"
 # function definition
 assert 9 "myfn1 () {return 9;} main () {return myfn1();}"
 assert 10 "myfn2 () {a = 1; b = 2; return a + b;} main () {a = 3; b = 4; return myfn2() + a + b;}"
+
+# assert 24 "myfn3 (a, b) {c = 4; return a * b * c;} main () {a = 3; b = 4; return myfn2(a, 2);}"
 
 echo OK
 

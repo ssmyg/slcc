@@ -181,7 +181,6 @@ void codegen(t_function *func) {
     printf("  sub rsp, %d\n", fn->lvar_num * 8);
     for (t_node *node = fn->node; node; node = node->next) {
       gen(node);
-      printf("  pop rax\n");
     }
     printf(".L.return.%s:\n", fn->name);
     printf("  mov rsp, rbp\n");
