@@ -90,7 +90,6 @@ struct s_token {
 struct s_lvar {
   t_lvar *next; // 次の変数かNULL
   char *name;   // 変数名
-  size_t len;   // 名前の長さ
   int offset;   // RBPからのオフセット
 };
 
@@ -113,6 +112,8 @@ int expect_number();
 
 bool at_eof();
 
+char *my_strndup(char *str, size_t len);
+
 /////////////////
 // parser.c
 /////////////////
@@ -124,7 +125,6 @@ t_function *program();
 // var.c
 /////////////////
 size_t var_len(char *p);
-t_lvar *new_lvar(t_token *tok);
+t_lvar *new_lvar(char *name);
 bool is_var_char(char p);
 t_lvar *find_lvar(t_token *tok);
-

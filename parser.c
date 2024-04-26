@@ -43,8 +43,7 @@ t_node *primary() {
         expect(")");
       }
       node->kind = ND_FUNC;
-      node->func = calloc(tok->len + 1, sizeof(char));
-      strncpy(node->func, tok->str, tok->len);
+      node->func = my_strndup(tok->str, tok->len);
       return node;
     }
 
@@ -56,7 +55,7 @@ t_node *primary() {
     if (lvar) {
       node->offset = lvar->offset;
     } else {
-      lvar = new_lvar(tok);
+      lvar = new_lvar(my_strndup(tok->str, tok->len));
       node->offset = lvar->offset;
     }
     return node;
@@ -257,4 +256,3 @@ t_function *program() {
 
   return head.next;
 }
-

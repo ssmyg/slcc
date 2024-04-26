@@ -7,6 +7,12 @@
 
 #include "slcc.h"
 
+char *my_strndup(char *str, size_t len) {
+  char *ret = calloc(len + 1, sizeof(char));
+  strncpy(ret, str, len);
+  return ret;
+}
+
 // エラーを報告するための関数
 // printfと同じ引数を取る
 void error(char *fmt, ...) {
@@ -48,11 +54,18 @@ t_token *consume_ident() {
   return NULL;
 }
 
+char *expect_ident() {
+  if (token->kind != TK_IDENT)
+    error_at(token->str, "not ident");
+  char *name = my_strndup(token->str, token->len);
+  token = token->next;
+  return name;
+}
+
 char *expect_func() {
   if (token->kind != TK_IDENT)
     error_at(token->str, "not function");
-  char *func = calloc(token->len + 1, sizeof(char));
-  strncpy(func, token->str, token->len);
+  char *func = my_strndup(token->str, token->len);
   token = token->next;
   return func;
 }
