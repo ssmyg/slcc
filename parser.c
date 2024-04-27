@@ -52,12 +52,10 @@ t_node *primary() {
     node->kind = ND_LVAR;
 
     t_lvar *lvar = find_lvar(tok);
-    if (lvar) {
-      node->offset = lvar->offset;
-    } else {
+    if (!lvar) {
       lvar = new_lvar(my_strndup(tok->str, tok->len));
-      node->offset = lvar->offset;
     }
+    node->lvar = lvar;
     return node;
   }
 
@@ -210,18 +208,8 @@ t_node *stmt() {
   return node;
 }
 
-int count_lvar_num() {
-  int num = 0;
-  t_lvar *tmp = locals;
-  while (tmp) {
-    num++;
-    tmp = tmp->next;
-  }
-  return num;
-}
-
 t_function *func() {
-  locals = calloc(1, sizeof(t_lvar));
+  locals = NULL;
   char *func_name = expect_func();
   expect("(");
   expect(")");
@@ -239,7 +227,7 @@ t_function *func() {
   t_function *func = (t_function *)calloc(1, sizeof(t_function));
   func->name = func_name;
   func->node = head.next;
-  func->lvar_num = count_lvar_num();
+  func->locals = locals;
   return func;
 }
 

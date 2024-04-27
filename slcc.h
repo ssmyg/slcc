@@ -55,18 +55,20 @@ struct s_node {
   // block
   t_node *body;
 
-  int val;
-  int offset;
+  int val; // ND_NUM
+
+  t_lvar *lvar; // ND_LVAR
 
   // function
   char *func;
-  t_node *args[6];
+  t_node *args[7];
 };
 
 struct s_function {
   char *name;
   t_node *node;
-  int lvar_num;
+  int stack_size;
+  t_lvar *locals;
   t_function *next;
 };
 

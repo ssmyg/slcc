@@ -22,9 +22,6 @@ size_t var_len(char *p) {
 
 t_lvar *find_lvar(t_token *tok) {
   for (t_lvar *var = locals; var; var = var->next) {
-    // TODO 後でこの分岐削除
-    if (var->name == NULL)
-      return NULL;
     size_t len = strlen(var->name);
     if (len == tok->len && !memcmp(tok->str, var->name, len)) {
       return var;
@@ -37,7 +34,6 @@ t_lvar *new_lvar(char *name) {
   t_lvar *lvar = calloc(1, sizeof(t_lvar));
   lvar->next = locals;
   lvar->name = name;
-  lvar->offset = locals->offset + 8;
   locals = lvar;
   return lvar;
 }

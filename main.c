@@ -19,9 +19,18 @@ int main(int argc, char **argv) {
 
   user_input = argv[1];
   token = tokenize();
-  t_function *func = program();
+  t_function *prog = program();
 
-  codegen(func);
+  // オフセットを計算
+  for (t_function *fn = prog; fn; fn = fn->next) {
+    int offset = 0;
+    for (t_lvar *var = fn->locals; var; var = var->next) {
+      offset += 8;
+      var->offset = offset;
+    }
+    fn->stack_size = offset;
+  }
+
+  codegen(prog);
   return 0;
 }
-

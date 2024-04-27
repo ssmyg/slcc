@@ -9,7 +9,7 @@ void gen_lvar(t_node *node) {
   if (node->kind != ND_LVAR)
     error("左辺値が変数ではありません\n");
   printf("  mov rax, rbp\n");
-  printf("  sub rax, %d\n", node->offset);
+  printf("  sub rax, %d\n", node->lvar->offset);
   printf("  push rax\n");
 }
 
@@ -178,7 +178,7 @@ void codegen(t_function *func) {
 
     printf("  push rbp\n");
     printf("  mov rbp, rsp\n");
-    printf("  sub rsp, %d\n", fn->lvar_num * 8);
+    printf("  sub rsp, %d\n", fn->stack_size);
     for (t_node *node = fn->node; node; node = node->next) {
       gen(node);
     }
