@@ -208,11 +208,28 @@ t_node *stmt() {
   return node;
 }
 
+static t_lvar *read_func_params() {
+  t_lvar *cur;
+
+  if (consume(")"))
+    return NULL;
+  cur = NULL;
+  while (1) {
+    cur = new_lvar(expect_ident());
+    if (consume(")"))
+      break;
+    expect(",");
+  }
+  return cur;
+}
+
 t_function *func() {
+  t_function *fn = (t_function *)calloc(1, sizeof(t_function));
+
   locals = NULL;
   char *func_name = expect_func();
   expect("(");
-  expect(")");
+  fn->params = read_func_params();
   expect("{");
 
   t_node head;
@@ -224,11 +241,10 @@ t_function *func() {
     cur = node;
   }
 
-  t_function *func = (t_function *)calloc(1, sizeof(t_function));
-  func->name = func_name;
-  func->node = head.next;
-  func->locals = locals;
-  return func;
+  fn->name = func_name;
+  fn->node = head.next;
+  fn->locals = locals;
+  return fn;
 }
 
 t_function *program() {

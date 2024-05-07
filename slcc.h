@@ -69,6 +69,7 @@ struct s_function {
   t_node *node;
   int stack_size;
   t_lvar *locals;
+  t_lvar *params;
   t_function *next;
 };
 
@@ -105,6 +106,7 @@ void codegen(t_function *func);
 /////////////////
 bool consume(char *op);
 t_token *consume_ident();
+char *expect_ident();
 char *expect_func();
 void expect(char *op);
 t_token *tokenize();

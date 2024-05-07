@@ -120,8 +120,16 @@ assert 21 "main () {return ret_arg6(1==1,2,3,4,2+3,2*3);}"
 # function definition
 assert 9 "myfn1 () {return 9;} main () {return myfn1();}"
 assert 10 "myfn2 () {a = 1; b = 2; return a + b;} main () {a = 3; b = 4; return myfn2() + a + b;}"
+assert 10 "myfn2 () {a = 2; a = 1; b = 2; return a + b;} main () {a = 3; b = 4; return myfn2() + a + b;}"
 
-# assert 24 "myfn3 (a, b) {c = 4; return a * b * c;} main () {a = 3; b = 4; return myfn2(a, 2);}"
+# argment
+assert 42 "myfn3 (a) {return a;} main () {return myfn3(42);}"
+# assert 8 "myfn3 (a, b) {return a + 2 * b;} main () {return myfn3(2, 3);}"
+
+
+## TODO a と b　が逆になっている
+# assert 11 "myfn3 (a, b) {c = 4; return a + b * c;} main () {a = 3; b = 4; return myfn3(a, 2);}"
+# assert 8 "myfn3 (a, b) {a = 1; b = 2; c = 4; return a * b * c;} main () {a = 3; b = 4; return myfn3(a, 2);}"
+# assert 24 "myfn3 (a, b) {b = 2; c = 4; return a * b * c;} main () {a = 3; b = 4; return myfn3(a, 10);}"
 
 echo OK
-

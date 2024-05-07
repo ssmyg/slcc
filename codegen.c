@@ -179,6 +179,13 @@ void codegen(t_function *func) {
     printf("  push rbp\n");
     printf("  mov rbp, rsp\n");
     printf("  sub rsp, %d\n", fn->stack_size);
+
+    // 引数をスタックにプッシュ
+    int i = 0;
+    for (t_lvar *vl = fn->params; vl; vl = vl->next) {
+      printf("  mov [rbp-%d], %s\n", vl->offset, ARG_REG[i++]);
+    }
+
     for (t_node *node = fn->node; node; node = node->next) {
       gen(node);
     }
