@@ -21,8 +21,11 @@ size_t var_len(char *p) {
 }
 
 t_lvar *find_lvar(t_token *tok) {
-  for (t_lvar *var = locals; var; var = var->next) {
+
+  for (t_lvar_list *list = locals; list; list = list->next) {
+    t_lvar *var = list->lvar;
     size_t len = strlen(var->name);
+
     if (len == tok->len && !memcmp(tok->str, var->name, len)) {
       return var;
     }
@@ -31,9 +34,12 @@ t_lvar *find_lvar(t_token *tok) {
 }
 
 t_lvar *new_lvar(char *name) {
+  t_lvar_list *vl = calloc(1, sizeof(t_lvar_list));
   t_lvar *lvar = calloc(1, sizeof(t_lvar));
-  lvar->next = locals;
   lvar->name = name;
-  locals = lvar;
+
+  vl->lvar = lvar;
+  vl->next = locals;
+  locals = vl;
   return lvar;
 }

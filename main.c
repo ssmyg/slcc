@@ -9,7 +9,7 @@ t_token *token;
 char *user_input;
 
 // ローカル変数
-t_lvar *locals;
+t_lvar_list *locals;
 
 int main(int argc, char **argv) {
   if (argc != 2) {
@@ -24,9 +24,9 @@ int main(int argc, char **argv) {
   // オフセットを計算
   for (t_function *fn = prog; fn; fn = fn->next) {
     int offset = 0;
-    for (t_lvar *var = fn->locals; var; var = var->next) {
+    for (t_lvar_list *vl = fn->locals; vl; vl = vl->next) {
       offset += 8;
-      var->offset = offset;
+      vl->lvar->offset = offset;
     }
     fn->stack_size = offset;
   }

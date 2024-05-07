@@ -182,8 +182,8 @@ void codegen(t_function *func) {
 
     // 引数をスタックにプッシュ
     int i = 0;
-    for (t_lvar *vl = fn->params; vl; vl = vl->next) {
-      printf("  mov [rbp-%d], %s\n", vl->offset, ARG_REG[i++]);
+    for (t_lvar_list *vl = fn->params; vl; vl = vl->next) {
+      printf("  mov [rbp-%d], %s\n", vl->lvar->offset, ARG_REG[i++]);
     }
 
     for (t_node *node = fn->node; node; node = node->next) {

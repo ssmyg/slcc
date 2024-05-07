@@ -4,6 +4,7 @@
 typedef struct s_node t_node;
 typedef struct s_token t_token;
 typedef struct s_lvar t_lvar;
+typedef struct s_lvar_list t_lvar_list;
 typedef struct s_function t_function;
 
 // 現在着目しているトーク
@@ -13,7 +14,7 @@ extern t_token *token;
 extern char *user_input;
 
 // ローカル変数
-extern t_lvar *locals;
+extern t_lvar_list *locals;
 
 // 抽象構文木のノードの種類
 typedef enum {
@@ -68,8 +69,8 @@ struct s_function {
   char *name;
   t_node *node;
   int stack_size;
-  t_lvar *locals;
-  t_lvar *params;
+  t_lvar_list *locals;
+  t_lvar_list *params;
   t_function *next;
 };
 
@@ -91,9 +92,14 @@ struct s_token {
 
 // ローカル変数の型
 struct s_lvar {
-  t_lvar *next; // 次の変数かNULL
-  char *name;   // 変数名
-  int offset;   // RBPからのオフセット
+  char *name; // 変数名
+  int offset; // RBPからのオフセット
+};
+
+// ローカル変数の型
+struct s_lvar_list {
+  t_lvar_list *next;
+  t_lvar *lvar;
 };
 
 /////////////////

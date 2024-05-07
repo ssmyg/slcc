@@ -208,19 +208,24 @@ t_node *stmt() {
   return node;
 }
 
-static t_lvar *read_func_params() {
-  t_lvar *cur;
+static t_lvar_list *read_func_params() {
+  t_lvar_list head;
+  t_lvar_list *cur;
 
   if (consume(")"))
     return NULL;
-  cur = NULL;
+
+  head.next = NULL;
+  cur = &head;
   while (1) {
-    cur = new_lvar(expect_ident());
+    cur->next = calloc(1, sizeof(t_lvar_list));
+    cur->next->lvar = new_lvar(expect_ident());
+    cur = cur->next;
     if (consume(")"))
       break;
     expect(",");
   }
-  return cur;
+  return head.next;
 }
 
 t_function *func() {

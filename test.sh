@@ -124,12 +124,12 @@ assert 10 "myfn2 () {a = 2; a = 1; b = 2; return a + b;} main () {a = 3; b = 4; 
 
 # argment
 assert 42 "myfn3 (a) {return a;} main () {return myfn3(42);}"
-# assert 8 "myfn3 (a, b) {return a + 2 * b;} main () {return myfn3(2, 3);}"
+assert 8 "myfn3 (a, b) {return a + 2 * b;} main () {return myfn3(2, 3);}"
 
+assert 11 "myfn3 (a, b) {c = 4; return a + b * c;} main () {a = 3; b = 4; return myfn3(a, 2);}"
+assert 8 "myfn3 (a, b) {a = 1; b = 2; c = 4; return a * b * c;} main () {a = 3; b = 4; return myfn3(a, 2);}"
+assert 24 "myfn3 (a, b) {b = 2; c = 4; return a * b * c;} main () {a = 3; b = 4; return myfn3(a, 10);}"
+assert 29 "myfn3 (a, b, c, d, e, f) {return a + 2*b + 3*c + 5*d + 7*e + 11*f;} main () {return myfn3(1,1,1,1,1,1);}"
 
-## TODO a と b　が逆になっている
-# assert 11 "myfn3 (a, b) {c = 4; return a + b * c;} main () {a = 3; b = 4; return myfn3(a, 2);}"
-# assert 8 "myfn3 (a, b) {a = 1; b = 2; c = 4; return a * b * c;} main () {a = 3; b = 4; return myfn3(a, 2);}"
-# assert 24 "myfn3 (a, b) {b = 2; c = 4; return a * b * c;} main () {a = 3; b = 4; return myfn3(a, 10);}"
 
 echo OK
